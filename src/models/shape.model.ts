@@ -12,12 +12,6 @@ export enum Type {
 export interface Shape {
   readonly center: Point;
   readonly type: Type;
-
-  /**
-   * Checks if this shape collides with the other shape
-   * @param other The other shape of any type
-   */
-  collides(other: Shape): boolean;
 }
 
 /**

@@ -8,7 +8,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { Point } from './models/shape.model';
 import { PlentinaService } from './plentina.service';
 
 export interface ShapeDTO {

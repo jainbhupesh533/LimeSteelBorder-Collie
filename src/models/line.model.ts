@@ -1,34 +1,17 @@
-import { Rect } from './rect.model';
-import { Circle } from './circle.model';
-import { distanceBetween, Point, Shape, Type } from './shape.model';
+// import { Circle } from './circle.model';
+import { Point, Shape, Type } from './shape.model';
 
 export class Line implements Shape {
   readonly center: Point;
-  readonly a: Point;
-  readonly b: Point;
-  readonly c: Point;
-  readonly d: Point;
-  readonly x2: number;
-  readonly y2: number;
-
+  readonly height: number;
+  readonly width: number;
   readonly type: Type;
 
-  constructor(x:number,y:number,x2:number,y2:number) {
-    this.a = <Point>{ x, y };
+  constructor(x: number, y: number, width: number, height: number) {
+    this.center = <Point>{ x, y };
     this.type = Type.LINE;
-  }
-
-  collides(other: Shape): boolean {
-    switch (other.type) {
-      case Type.LINE:
-
-      case Type.CIRCLE:
-
-      case Type.RECT:
-
-      default:
-        throw new Error(`Invalid shape type!`);
-    }
+    this.width = width;
+    this.height = height;
   }
 
   /**
