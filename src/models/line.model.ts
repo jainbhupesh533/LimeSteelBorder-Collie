@@ -1,30 +1,30 @@
-// import { Circle } from './circle.model';
+import { ShapeDTO } from 'src/plentina.controller';
 import { Point, Shape, Type } from './shape.model';
 
 export class Line implements Shape {
   readonly center: Point;
-  readonly height: number;
-  readonly width: number;
+  readonly x2: number;
+  readonly y2: number;
   readonly type: Type;
 
-  constructor(x: number, y: number, width: number, height: number) {
+  constructor(x: number, y: number, x2: number, y2: number) {
     this.center = <Point>{ x, y };
+    this.x2 = x2;
+    this.y2 = y2;
     this.type = Type.LINE;
-    this.width = width;
-    this.height = height;
   }
 
+  // use height and width as (x2,y2) as line endpoint
   /**
-   * Typecasts a Shape object into this Shape type
-   * @param other the Shape object
-   * @returns a Circle object
+   * Create a rect object from shapeDTO
+   * @param shape a ShapeDTO object as input
+   * @returns a LINE object
    */
-  static fromShape(other: Shape): Circle {
-    const polymorph = <any>other;
-    if (!polymorph.radius) {
-      throw new Error('Shape is invalid! Cannot convert to a Circle');
-    }
 
-    return new Circle(polymorph.center.x, polymorph.center.y, polymorph.radius);
+  static fromShapeDTO(shape: ShapeDTO): Line {
+    if (!shape.width || !shape.height) {
+      throw new Error('ShapeDTO Cannot convert to a Line');
+    }
+    return new Line(shape.x, shape.y, shape.width, shape.height);
   }
 }

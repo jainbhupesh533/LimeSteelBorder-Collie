@@ -20,7 +20,7 @@ export class Rect implements Shape {
    * @returns a rect object
    */
 
-  static fromShapeDto(shape: ShapeDTO): Rect {
+  static fromShapeDTO(shape: ShapeDTO): Rect {
     if (!shape.width || !shape.height) {
       throw new Error('ShapeDTO Cannot convert to a Rectangle');
     }

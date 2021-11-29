@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DetectCollision } from './detectCollision.service';
 import { Circle } from './models/circle.model';
+import { Line } from './models/line.model';
 import { Rect } from './models/rect.model';
 import {
   CollideShapesRequest,
@@ -53,6 +54,54 @@ export class PlentinaService {
         request.firstShape,
         request.secondShape,
       );
+    } else if (
+      request.firstShape.x &&
+      request.firstShape.y &&
+      request.secondShape.radius
+    ) {
+      result = this.doesCircleAndLineCollide(
+        request.secondShape,
+        request.firstShape,
+      );
+    } else if (
+      request.firstShape.radius &&
+      request.secondShape.x &&
+      request.secondShape.y
+    ) {
+      result = this.doesCircleAndLineCollide(
+        request.firstShape,
+        request.secondShape,
+      );
+    } else if (
+      request.firstShape.x &&
+      request.firstShape.y &&
+      request.secondShape.x &&
+      request.secondShape.height
+    ) {
+      result = this.doesRectAndLineCollide(
+        request.secondShape,
+        request.firstShape,
+      );
+    } else if (
+      request.firstShape.x &&
+      request.firstShape.height &&
+      request.secondShape.x &&
+      request.secondShape.y
+    ) {
+      result = this.doesRectAndLineCollide(
+        request.firstShape,
+        request.secondShape,
+      );
+    } else if (
+      request.firstShape.x &&
+      request.firstShape.y &&
+      !request.secondShape.x &&
+      !request.secondShape.width
+    ) {
+      result = this.doesLineAndLineCollide(
+        request.firstShape,
+        request.firstShape,
+      );
     } else {
       throw new Error('Invalid shapes!');
     }
@@ -73,7 +122,7 @@ export class PlentinaService {
    */
   doesCircleAndRectCollide(circle1: ShapeDTO, rect1: ShapeDTO): boolean {
     const circle = Circle.fromShapeDTO(circle1);
-    const rect = Rect.fromShapeDto(rect1);
+    const rect = Rect.fromShapeDTO(rect1);
 
     return DetectCollision.isCircleAndRectCollision(circle, rect);
   }
@@ -97,9 +146,45 @@ export class PlentinaService {
    * @returns a boolean if they collide or not
    */
   doesRectAndRectCollide(shape1: ShapeDTO, shape2: ShapeDTO): boolean {
-    const rect1 = Rect.fromShapeDto(shape1);
-    const rect2 = Rect.fromShapeDto(shape2);
+    const rect1 = Rect.fromShapeDTO(shape1);
+    const rect2 = Rect.fromShapeDTO(shape2);
 
     return DetectCollision.isRectAndRectCollision(rect1, rect2);
+  }
+  /**
+   * Checks if a line and a second line collide
+   * @param shape1 ShapeDTO object which will be used to create line
+   * @param shape2 ShapeDTO object which will be used to create line
+   * @returns a boolean if they collide or not
+   */
+  doesLineAndLineCollide(shape1: ShapeDTO, shape2: ShapeDTO): boolean {
+    const line1 = Line.fromShapeDTO(shape1);
+    const line2 = Line.fromShapeDTO(shape2);
+
+    return DetectCollision.isLineAndLineCollision(line1, line2);
+  }
+  /**
+   * Checks if a line and a second line collide
+   * @param shape1 ShapeDTO object which will be used to create line
+   * @param shape2 ShapeDTO object which will be used to create line
+   * @returns a boolean if they collide or not
+   */
+  doesCircleAndLineCollide(shape1: ShapeDTO, shape2: ShapeDTO): boolean {
+    const circle1 = Circle.fromShapeDTO(shape1);
+    const line2 = Line.fromShapeDTO(shape2);
+
+    return DetectCollision.isCircleAndLineCollision(circle1, line2);
+  }
+  /**
+   * Checks if a line and a second line collide
+   * @param shape1 ShapeDTO object which will be used to create line
+   * @param shape2 ShapeDTO object which will be used to create line
+   * @returns a boolean if they collide or not
+   */
+  doesRectAndLineCollide(shape1: ShapeDTO, shape2: ShapeDTO): boolean {
+    const rect1 = Rect.fromShapeDTO(shape1);
+    const line2 = Line.fromShapeDTO(shape2);
+
+    return DetectCollision.isRectAndLineCollision(rect1, line2);
   }
 }
